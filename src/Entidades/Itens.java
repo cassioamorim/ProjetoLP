@@ -18,17 +18,17 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Sandro
+ * @author Cássio
  */
 @Entity
-@Table(name = "venda_produto")
+@Table(name = "itens")
 @NamedQueries({
-    @NamedQuery(name = "VendaProduto.findAll", query = "SELECT v FROM VendaProduto v")})
-public class VendaProduto implements Serializable {
+    @NamedQuery(name = "Itens.findAll", query = "SELECT i FROM Itens i")})
+public class Itens implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected VendaProdutoPK vendaProdutoPK;
+    protected ItensPK itensPK;
     @Basic(optional = false)
     @Column(name = "quantidade")
     private int quantidade;
@@ -42,29 +42,29 @@ public class VendaProduto implements Serializable {
     @ManyToOne(optional = false)
     private Venda venda;
 
-    public VendaProduto() {
+    public Itens() {
     }
 
-    public VendaProduto(VendaProdutoPK vendaProdutoPK) {
-        this.vendaProdutoPK = vendaProdutoPK;
+    public Itens(ItensPK itensPK) {
+        this.itensPK = itensPK;
     }
 
-    public VendaProduto(VendaProdutoPK vendaProdutoPK, int quantidade, double precoVenda) {
-        this.vendaProdutoPK = vendaProdutoPK;
+    public Itens(ItensPK itensPK, int quantidade, double precoVenda) {
+        this.itensPK = itensPK;
         this.quantidade = quantidade;
         this.precoVenda = precoVenda;
     }
 
-    public VendaProduto(int idVenda, int idProduto) {
-        this.vendaProdutoPK = new VendaProdutoPK(idVenda, idProduto);
+    public Itens(int idVenda, int idProduto) {
+        this.itensPK = new ItensPK(idVenda, idProduto);
     }
 
-    public VendaProdutoPK getVendaProdutoPK() {
-        return vendaProdutoPK;
+    public ItensPK getItensPK() {
+        return itensPK;
     }
 
-    public void setVendaProdutoPK(VendaProdutoPK vendaProdutoPK) {
-        this.vendaProdutoPK = vendaProdutoPK;
+    public void setItensPK(ItensPK itensPK) {
+        this.itensPK = itensPK;
     }
 
     public int getQuantidade() {
@@ -102,18 +102,18 @@ public class VendaProduto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (vendaProdutoPK != null ? vendaProdutoPK.hashCode() : 0);
+        hash += (itensPK != null ? itensPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VendaProduto)) {
+        if (!(object instanceof Itens)) {
             return false;
         }
-        VendaProduto other = (VendaProduto) object;
-        if ((this.vendaProdutoPK == null && other.vendaProdutoPK != null) || (this.vendaProdutoPK != null && !this.vendaProdutoPK.equals(other.vendaProdutoPK))) {
+        Itens other = (Itens) object;
+        if ((this.itensPK == null && other.itensPK != null) || (this.itensPK != null && !this.itensPK.equals(other.itensPK))) {
             return false;
         }
         return true;
@@ -121,7 +121,7 @@ public class VendaProduto implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.VendaProduto[ vendaProdutoPK=" + vendaProdutoPK + " ]";
+        return "Entidades.Itens[ itensPK=" + itensPK + " ]";
     }
     
 }

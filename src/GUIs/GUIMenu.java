@@ -52,7 +52,7 @@ public class GUIMenu extends JFrame {
         JMenuItem produto = new JMenuItem("GUIProduto");
         JMenuItem cliente = new JMenuItem("GUICliente");
         JMenuItem venda = new JMenuItem("GUIVenda");
-        JMenuItem vendaProduto = new JMenuItem("GUIVendaProduto");
+        JMenuItem itens = new JMenuItem("GUIItens");
 
         // Cria e aiciona um CheckButton como um item de menu
         // Cria e aiciona um RadioButton como um item de menu
@@ -63,7 +63,7 @@ public class GUIMenu extends JFrame {
         fileMenu.add(tipo);
         fileMenu3.add(cliente);
         fileMenu2.add(venda);
-        fileMenu2.add(vendaProduto);
+        fileMenu2.add(itens);
         setVisible(true);
 
         produto.addActionListener(new ActionListener() {
@@ -101,10 +101,10 @@ public class GUIMenu extends JFrame {
             }
         });
 
-        vendaProduto.addActionListener(new ActionListener() {
+        itens.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                GUIVendaProdutoPK guiVendaProdutoPK = new GUIVendaProdutoPK();
+                GUIItens guiItens = new GUIItens();
             }
         });
 

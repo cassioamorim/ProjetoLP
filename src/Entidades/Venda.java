@@ -6,6 +6,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -24,7 +25,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Sandro
+ * @author Cássio
  */
 @Entity
 @Table(name = "venda")
@@ -41,11 +42,11 @@ public class Venda implements Serializable {
     @Column(name = "data")
     @Temporal(TemporalType.DATE)
     private Date data;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
+    private List<Itens> itensList;
     @JoinColumn(name = "cliente_cpf", referencedColumnName = "cpf")
     @ManyToOne(optional = false)
     private Cliente clienteCpf;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
-    private List<VendaProduto> vendaProdutoList;
 
     public Venda() {
     }
@@ -75,20 +76,20 @@ public class Venda implements Serializable {
         this.data = data;
     }
 
+    public List<Itens> getItensList() {
+        return itensList;
+    }
+
+    public void setItensList(List<Itens> itensList) {
+        this.itensList = itensList;
+    }
+
     public Cliente getClienteCpf() {
         return clienteCpf;
     }
 
     public void setClienteCpf(Cliente clienteCpf) {
         this.clienteCpf = clienteCpf;
-    }
-
-    public List<VendaProduto> getVendaProdutoList() {
-        return vendaProdutoList;
-    }
-
-    public void setVendaProdutoList(List<VendaProduto> vendaProdutoList) {
-        this.vendaProdutoList = vendaProdutoList;
     }
 
     @Override
@@ -113,6 +114,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return idVenda + "-" + clienteCpf.getCpf() + "-" + clienteCpf.getNome();
+        return idVenda + "-" + clienteCpf;
     }
+    
 }

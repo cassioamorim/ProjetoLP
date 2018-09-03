@@ -12,10 +12,10 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Sandro
+ * @author Cássio
  */
 @Embeddable
-public class VendaProdutoPK implements Serializable {
+public class ItensPK implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "id_venda")
@@ -24,10 +24,10 @@ public class VendaProdutoPK implements Serializable {
     @Column(name = "id_produto")
     private int idProduto;
 
-    public VendaProdutoPK() {
+    public ItensPK() {
     }
 
-    public VendaProdutoPK(int idVenda, int idProduto) {
+    public ItensPK(int idVenda, int idProduto) {
         this.idVenda = idVenda;
         this.idProduto = idProduto;
     }
@@ -59,10 +59,10 @@ public class VendaProdutoPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VendaProdutoPK)) {
+        if (!(object instanceof ItensPK)) {
             return false;
         }
-        VendaProdutoPK other = (VendaProdutoPK) object;
+        ItensPK other = (ItensPK) object;
         if (this.idVenda != other.idVenda) {
             return false;
         }
@@ -74,7 +74,7 @@ public class VendaProdutoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.VendaProdutoPK[ idVenda=" + idVenda + ", idProduto=" + idProduto + " ]";
+        return idVenda + "-" + idProduto;
     }
     
 }

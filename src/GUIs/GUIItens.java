@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.util.Date;
 
-public class GUIVendaProdutoPK extends JDialog {
+public class GUIItens extends JDialog {
 
     ImageIcon iconeCreate = new ImageIcon(getClass().getResource("/icones/create.png"));
     ImageIcon iconeRetrieve = new ImageIcon(getClass().getResource("/icones/retrieve.png"));
@@ -61,11 +61,11 @@ public class GUIVendaProdutoPK extends JDialog {
     JLabel labelAviso = new JLabel("");
 
     String acao = "";//variavel para facilitar insert e update
-    DAOVendaProdutoPK daoVendaProdutoPK = new DAOVendaProdutoPK();
+    DAOItensPK daoItensPK = new DAOItensPK();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat decimalFormat = new DecimalFormat("###,###,##0.00");
-    VendaProduto vendaProduto;
-    DAOVendaProduto daoVendaProduto = new DAOVendaProduto();
+    Itens itens;
+    DAOItens daoItens = new DAOItens();
 
     private void atvBotoes(boolean c, boolean r, boolean u, boolean d) {
         btnCreate.setEnabled(c);
@@ -105,8 +105,8 @@ public class GUIVendaProdutoPK extends JDialog {
     }
     Color corPadrao = lbIdProduto.getBackground();
 
-    public GUIVendaProdutoPK() {
-        setTitle("CRUD - VendaProdutoPK");
+    public GUIItens() {
+        setTitle("CRUD - ItensPK");
         setSize(450, 200);
         setLayout(new BorderLayout());//informa qual gerenciador de layout será usado
         setBackground(Color.CYAN);//cor do fundo da janela
@@ -173,12 +173,12 @@ public class GUIVendaProdutoPK extends JDialog {
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                vendaProduto = new VendaProduto();
+                itens = new Itens();
                 tfIdProduto.setText(tfIdProduto.getText().trim());//caso tenham sido digitados espaços
-                DAOVendaProduto daoVendaProduto1 = new DAOVendaProduto();
+                DAOItens daoItens1 = new DAOItens();
                 if (tfIdProduto.getText().equals("")) {
                     // DAOProduto daoProduto = new DAOProduto();
-                    List<String> listaAuxiliar = daoVendaProduto.listInOrderNomeStrings("id");
+                    List<String> listaAuxiliar = daoItens.listInOrderNomeStrings("id");
                     if (listaAuxiliar.size() > 0) {
                         Point lc = btnRetrieve.getLocationOnScreen();
                         lc.x = lc.x + btnRetrieve.getWidth();
@@ -197,14 +197,14 @@ public class GUIVendaProdutoPK extends JDialog {
                     tfIdProduto.selectAll();
                 } else {
                     try {
-                        VendaProdutoPK vendaProdutoPK = new VendaProdutoPK();
-                        vendaProdutoPK.setIdVenda(Integer.valueOf(tfIdVenda.getText()));
-                        vendaProdutoPK.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
-                        DAOVendaProduto daoVendaProduto = new DAOVendaProduto();
-                        vendaProduto = daoVendaProduto.obter(vendaProdutoPK);
-                        if (vendaProduto != null) { //se encontrou na lista                            
-                            tfQuantidade.setText(String.valueOf(vendaProduto.getQuantidade()));
-                            tfPrecoVenda.setText(String.valueOf(vendaProduto.getPrecoVenda()));
+                        ItensPK itensPK = new ItensPK();
+                        itensPK.setIdVenda(Integer.valueOf(tfIdVenda.getText()));
+                        itensPK.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
+                        DAOItens daoItens = new DAOItens();
+                        itens = daoItens.obter(itensPK);
+                        if (itens != null) { //se encontrou na lista                            
+                            tfQuantidade.setText(String.valueOf(itens.getQuantidade()));
+                            tfPrecoVenda.setText(String.valueOf(itens.getPrecoVenda()));
                             atvBotoes(false, true, true, true);
                             habilitarAtributos(false, false, false, false);
                             labelAviso.setText("Encontrou - clic [Pesquisar], [Alterar] ou [Excluir]");
@@ -246,13 +246,13 @@ public class GUIVendaProdutoPK extends JDialog {
             public void actionPerformed(ActionEvent ae) {
                 boolean deuRuim = false;
                 if (acao.equals("insert")) {
-                    vendaProduto = new VendaProduto();
+                    itens = new Itens();
                 }
                 try {
                     sdf.setLenient(false);
                     int idVenda = Integer.valueOf(tfIdVenda.getText());
                     int idProd = Integer.valueOf(tfIdProduto.getText());
-                    vendaProduto.setVendaProdutoPK(new VendaProdutoPK(idVenda, idProd));
+                    itens.setItensPK(new ItensPK(idVenda, idProd));
 
                 } catch (Exception erro2) {
                     deuRuim = true;
@@ -260,18 +260,18 @@ public class GUIVendaProdutoPK extends JDialog {
                     tfIdVenda.setBackground(Color.red);
                 }
                 try {
-                    vendaProduto.setQuantidade(Integer.valueOf(tfQuantidade.getText()));
-                    vendaProduto.setPrecoVenda(Double.valueOf(tfPrecoVenda.getText()));
+                    itens.setQuantidade(Integer.valueOf(tfQuantidade.getText()));
+                    itens.setPrecoVenda(Double.valueOf(tfPrecoVenda.getText()));
                     zerarAtributos();
                 } catch (Exception erro3) {
                     tfPrecoVenda.setBackground(Color.red);
                 }
                 if (!deuRuim) {
                     if (acao.equals("insert")) {
-                        daoVendaProduto.inserir(vendaProduto);
+                        daoItens.inserir(itens);
                         labelAviso.setText("Registro inserido.");
                     } else {
-                        daoVendaProduto.atualizar(vendaProduto);
+                        daoItens.atualizar(itens);
                         labelAviso.setText("Registro alterado.");
                     }
                     habilitarAtributos(true, true, false, false);
@@ -297,7 +297,7 @@ public class GUIVendaProdutoPK extends JDialog {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 acao = "list";
-                GUIVendaProdutoPKListagem guiVendaProdutoPKListagem = new GUIVendaProdutoPKListagem(daoVendaProduto.listInOrderNome());
+                GUIItensListagem guiItensListagem = new GUIItensListagem(daoItens.listInOrderNome());
             }
         });
         btnUpdate.addActionListener(new ActionListener() {
@@ -315,14 +315,14 @@ public class GUIVendaProdutoPK extends JDialog {
             public void actionPerformed(ActionEvent ae) {
                 if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
                         "Confirma a exclusão do registro?\n "
-                        + vendaProduto.getProduto().getNome() + "\n"
-                        + Integer.valueOf(vendaProduto.getVendaProdutoPK().getIdVenda()) + "\n"
-                        + "R$" + vendaProduto.getPrecoVenda() + "\n",
+                        + itens.getProduto().getNome() + "\n"
+                        + Integer.valueOf(itens.getItensPK().getIdVenda()) + "\n"
+                        + "R$" + itens.getPrecoVenda() + "\n",
                         "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
                     labelAviso.setText("Registro excluído...");
-//                    daDoVendaProdutoPK.remover(produto);
-                    daoVendaProduto.remover(vendaProduto);
+//                    daDoItensPK.remover(produto);
+                    daoItens.remover(itens);
                     zerarAtributos();
                     mostrarBotoes(true);
                     atvBotoes(false, true, false, false);
@@ -387,6 +387,6 @@ public class GUIVendaProdutoPK extends JDialog {
     }
 
     public static void main(String[] args) {
-        new GUIVendaProdutoPK();
+        new GUIItens();
     }
 }

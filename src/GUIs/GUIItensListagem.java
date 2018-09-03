@@ -1,6 +1,6 @@
 package GUIs;
 
-import Entidades.VendaProduto;
+import Entidades.Itens;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -17,15 +17,15 @@ import java.text.DecimalFormat;
 import tools.CentroDoMonitorMaior;
 
 // @author Radames
-public class GUIVendaProdutoPKListagem extends JDialog {
+public class GUIItensListagem extends JDialog {
 
     JPanel painelTa = new JPanel();
     JScrollPane scroll = new JScrollPane();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat decimalFormat = new DecimalFormat("###,###,##0.00");
 
-    public GUIVendaProdutoPKListagem(List<VendaProduto> texto) {
-        setTitle("Listagem de VendaProduto");
+    public GUIItensListagem(List<Itens> texto) {
+        setTitle("Listagem de Itens");
         setSize(600, 375);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);//libera ao sair (tira da memÃ³ria a classe
         setLayout(new BorderLayout());//informa qual gerenciador de layout serÃ¡ usado
@@ -45,7 +45,7 @@ public class GUIVendaProdutoPKListagem extends JDialog {
         scroll.setViewportView(tabela);
 
         for (int i = 0; i < texto.size(); i++) {
-            String[] linha = new String[]{String.valueOf(texto.get(i).getVendaProdutoPK().getIdVenda()),
+            String[] linha = new String[]{String.valueOf(texto.get(i).getItensPK().getIdVenda()),
                 texto.get(i).getProduto().getNome(),
                 sdf.format(texto.get(i).getVenda().getData()),
                 String.valueOf(texto.get(i).getQuantidade()),

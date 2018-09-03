@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Sandro
+ * @author Cássio
  */
 @Entity
 @Table(name = "produto")
@@ -46,14 +46,14 @@ public class Produto implements Serializable {
     @Basic(optional = false)
     @Column(name = "caminho")
     private String caminho;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
+    private List<Itens> itensList;
     @JoinColumn(name = "id_marca", referencedColumnName = "id_marca")
     @ManyToOne(optional = false)
     private Marca idMarca;
     @JoinColumn(name = "id_tipo", referencedColumnName = "id_tipo")
     @ManyToOne(optional = false)
     private Tipo idTipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
-    private List<VendaProduto> vendaProdutoList;
 
     public Produto() {
     }
@@ -110,6 +110,14 @@ public class Produto implements Serializable {
         this.caminho = caminho;
     }
 
+    public List<Itens> getItensList() {
+        return itensList;
+    }
+
+    public void setItensList(List<Itens> itensList) {
+        this.itensList = itensList;
+    }
+
     public Marca getIdMarca() {
         return idMarca;
     }
@@ -124,14 +132,6 @@ public class Produto implements Serializable {
 
     public void setIdTipo(Tipo idTipo) {
         this.idTipo = idTipo;
-    }
-
-    public List<VendaProduto> getVendaProdutoList() {
-        return vendaProdutoList;
-    }
-
-    public void setVendaProdutoList(List<VendaProduto> vendaProdutoList) {
-        this.vendaProdutoList = vendaProdutoList;
     }
 
     @Override
@@ -158,5 +158,5 @@ public class Produto implements Serializable {
     public String toString() {
         return idProduto + "-" + nome;
     }
-    
+
 }

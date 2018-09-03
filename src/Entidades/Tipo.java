@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Sandro
+ * @author Cássio
  */
 @Entity
 @Table(name = "tipo")
@@ -98,5 +98,5 @@ public class Tipo implements Serializable {
     public String toString() {
         return idTipo + "-" + nome;
     }
-    
+
 }
