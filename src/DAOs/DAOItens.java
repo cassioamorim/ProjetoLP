@@ -47,8 +47,10 @@ public class DAOItens extends DAOGenerico<Itens> {
         for (int i = 0; i < lf.size(); i++) {
             ls.add(lf.get(i).getItensPK().getIdProduto() + "-"
                     + lf.get(i).getProduto().getNome() + "-"
-                    + Integer.valueOf(lf.get(i).getItensPK().getIdVenda())
-                    + "-" + lf.get(i).getPrecoVenda());
+                    + lf.get(i).getItensPK().getIdVenda() + "-"
+                    + lf.get(i).getPrecoProduto() + "-"
+                    + lf.get(i).getDesconto() + "-"
+                    + lf.get(i).getTotal());
         }
         return ls;
     }
@@ -57,7 +59,7 @@ public class DAOItens extends DAOGenerico<Itens> {
         DAOItens daoItens = new DAOItens();
         List<Itens> listaItens = daoItens.list();
         for (Itens precoProduto : listaItens) {
-            System.out.println(precoProduto.getPrecoVenda() + "-" + precoProduto.getProduto());
+            System.out.println(precoProduto.getPrecoProduto() + "-" + precoProduto.getProduto());
         }
     }
 }

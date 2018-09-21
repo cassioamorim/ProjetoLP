@@ -172,7 +172,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return cpf + "-" + nome;
+        return cpf + "-" + getNome();
     }
     
 }

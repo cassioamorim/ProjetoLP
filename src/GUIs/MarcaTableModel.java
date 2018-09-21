@@ -1,8 +1,5 @@
 package GUIs;
 
-
-
-
 import Entidades.Marca;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -14,8 +11,6 @@ public class MarcaTableModel extends AbstractTableModel {
     private final String colunas[] = new String[]{"id", "Nome"};
     private List<Marca> dados;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    //private final SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
-  
 
     public MarcaTableModel(List<Marca> dados) {
         this.dados = dados;
@@ -57,7 +52,7 @@ public class MarcaTableModel extends AbstractTableModel {
             case 0:
                 return s.getIdMarca();
             case 1:
-                return s.getNome();            
+                return s.getNome();
             default:
                 throw new IndexOutOfBoundsException("Coluna Inválida!");
         }
@@ -65,25 +60,22 @@ public class MarcaTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex==0) {
+        if (columnIndex == 0) {
             return false;
         }
         return true;
     }
 
-  
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
-      //  mudou = true;
         Marca s = dados.get(rowIndex);
         switch (columnIndex) {
-            case 0:              
-                    s.setIdMarca((Integer) aValue);                
+            case 0:
+                s.setIdMarca((Integer) aValue);
                 break;
             case 1:
                 s.setNome((String) aValue);
-                break;          
+                break;
             default:
                 throw new IndexOutOfBoundsException("Coluna Inválida!!!");
         }

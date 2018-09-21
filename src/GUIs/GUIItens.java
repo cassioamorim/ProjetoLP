@@ -2,9 +2,7 @@ package GUIs;
 
 import DAOs.*;
 import Entidades.*;
-import java.awt.Dimension;
 import java.util.List;
-import java.awt.Point;
 import javax.swing.JDialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,8 +10,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
@@ -27,7 +23,6 @@ import javax.swing.WindowConstants;
 import tools.*;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
-import java.util.Date;
 
 public class GUIItens extends JDialog {
 
@@ -45,27 +40,31 @@ public class GUIItens extends JDialog {
     JButton btnSave = new JButton(iconeSave);
     JButton btnCancel = new JButton(iconeCancel);
     JButton btnList = new JButton(iconeListar);
-
     JPanel pnQuantidade = new JPanel(new GridLayout(1, 2));
-    JPanel pnPrecoVenda = new JPanel(new GridLayout(1, 2));
+    JPanel pnPrecoProduto = new JPanel(new GridLayout(1, 2));
+    JPanel pnDesconto = new JPanel(new GridLayout(1, 2));
+    JPanel pnTotal = new JPanel(new GridLayout(1, 2));
     JLabel lbIdVenda = new JLabel("ID Venda");
     JTextField tfIdVenda = new JTextField(5);
     JLabel lbIdProduto = new JLabel("ID Produto");
     JTextField tfIdProduto = new JTextField(5);
     JLabel lbQuantidade = new JLabel("Quantidade");
     JTextField tfQuantidade = new JTextField(20);
-    JLabel lbPrecoVenda = new JLabel("Preço de venda");
-    JTextField tfPrecoVenda = new JTextField(20);
-
+    JLabel lbPrecoProduto = new JLabel("Preço do produto");
+    JTextField tfPrecoProduto = new JTextField(20);
+    JLabel lbDesconto = new JLabel("Desconto (%)");
+    JTextField tfDesconto = new JTextField(20);
+    JLabel lbTotal = new JLabel("Total");
+    JTextField tfTotal = new JTextField(20);
     JPanel pnAvisos = new JPanel();
     JLabel labelAviso = new JLabel("");
-
-    String acao = "";//variavel para facilitar insert e update
+    String acao = "";
     DAOItensPK daoItensPK = new DAOItensPK();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     DecimalFormat decimalFormat = new DecimalFormat("###,###,##0.00");
     Itens itens;
     DAOItens daoItens = new DAOItens();
+    Produto produto = new Produto();
 
     private void atvBotoes(boolean c, boolean r, boolean u, boolean d) {
         btnCreate.setEnabled(c);
@@ -85,7 +84,7 @@ public class GUIItens extends JDialog {
         btnCancel.setVisible(!visivel);
     }
 
-    private void habilitarAtributos(boolean venda, boolean produto, boolean quantidade, boolean preco) {
+    private void habilitarAtributos(boolean venda, boolean produto, boolean quantidade, boolean preco, boolean desconto) {
         if (produto) {
             tfIdVenda.requestFocus();
             tfIdVenda.selectAll();
@@ -93,27 +92,28 @@ public class GUIItens extends JDialog {
         tfIdVenda.setEditable(venda);
         tfIdProduto.setEditable(produto);
         tfQuantidade.setEditable(quantidade);
-        tfPrecoVenda.setEditable(preco);
-
+        tfPrecoProduto.setEditable(preco);
+        tfDesconto.setEditable(desconto);
     }
 
     public void zerarAtributos() {
         tfIdVenda.setText("");
         tfIdProduto.setText("");
         tfQuantidade.setText("");
-        tfPrecoVenda.setText("");
+        tfPrecoProduto.setText("");
+        tfDesconto.setText("");
+        tfTotal.setText("");
     }
     Color corPadrao = lbIdProduto.getBackground();
 
     public GUIItens() {
         setTitle("CRUD - ItensPK");
-        setSize(450, 200);
-        setLayout(new BorderLayout());//informa qual gerenciador de layout será usado
-        setBackground(Color.CYAN);//cor do fundo da janela
-        Container cp = getContentPane();//container principal, para adicionar nele os outros componentes
-
+        setSize(600, 200);
+        setLayout(new BorderLayout());
+        setBackground(Color.BLACK);
+        Container cp = getContentPane();
         atvBotoes(false, true, false, false);
-        habilitarAtributos(true, true, false, false);
+        habilitarAtributos(false, false, false, false, false);
         btnCreate.setToolTipText("Inserir novo registro");
         btnRetrieve.setToolTipText("Pesquisar por chave");
         btnUpdate.setToolTipText("Alterar");
@@ -135,10 +135,7 @@ public class GUIItens extends JDialog {
         Toolbar1.add(btnList);
         btnSave.setVisible(false);
         btnCancel.setVisible(false);
-
-//atritubos não chave, todos no painel centro
-        JPanel centro = new JPanel(new GridLayout(2, 1));
-
+        JPanel centro = new JPanel(new GridLayout(4, 1));
         pnAvisos.add(labelAviso);
         pnAvisos.setBackground(Color.yellow);
         cp.add(Toolbar1, BorderLayout.NORTH);
@@ -146,101 +143,74 @@ public class GUIItens extends JDialog {
         cp.add(pnAvisos, BorderLayout.SOUTH);
         pnQuantidade.add(lbQuantidade);
         pnQuantidade.add(tfQuantidade);
-        pnPrecoVenda.add(lbPrecoVenda);
-        pnPrecoVenda.add(tfPrecoVenda);
+        pnPrecoProduto.add(lbPrecoProduto);
+        pnPrecoProduto.add(tfPrecoProduto);
+        pnDesconto.add(lbDesconto);
+        pnDesconto.add(tfDesconto);
+        pnTotal.add(lbTotal);
+        pnTotal.add(tfTotal);
         centro.add(pnQuantidade);
-        centro.add(pnPrecoVenda);
+        centro.add(pnPrecoProduto);
+        centro.add(pnDesconto);
+        centro.add(pnTotal);
+        tfTotal.setEnabled(false);
         tfIdProduto.requestFocus();
         tfIdProduto.selectAll();
-        labelAviso.setText("Digite no campo ID e clic [Pesquisar]");
-
-//        try {
-//            //esse código é para facilitar os testes
-//            tfIdProduto.setText("1");
-//            tfIdVenda.setText(sdf.format(sdf.parse("10/06/2018")));
-//
-//        } catch (Exception e) {
-//        }
-//--------------- listeners ----------------- 
-        tfIdProduto.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnRetrieve.doClick();
-            }
-        });
-
-//-----------------------------  btnRetrieve ------------------------------------------
+        labelAviso.setText("Aperte ENTER nos campos ID para selecionar os ID's e click [Pesquisar].");
         btnRetrieve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 itens = new Itens();
-                tfIdProduto.setText(tfIdProduto.getText().trim());//caso tenham sido digitados espaços
-                DAOItens daoItens1 = new DAOItens();
-                if (tfIdProduto.getText().equals("")) {
-                    // DAOProduto daoProduto = new DAOProduto();
-                    List<String> listaAuxiliar = daoItens.listInOrderNomeStrings("id");
-                    if (listaAuxiliar.size() > 0) {
-                        Point lc = btnRetrieve.getLocationOnScreen();
-                        lc.x = lc.x + btnRetrieve.getWidth();
-                        String selectedItem = new JanelaPesquisar(listaAuxiliar).getValorRetornado();
-                        if (!selectedItem.equals("")) {
-                            String[] aux = selectedItem.split("-");
-                            tfIdProduto.setText(aux[0]);
-                            tfIdVenda.setText(aux[2]);
-                            btnRetrieve.doClick();
-                        } else {
-                            tfIdProduto.requestFocus();
-                            tfIdProduto.selectAll();
-                        }
+                try {
+                    ItensPK itensPK = new ItensPK();
+                    itensPK.setIdVenda(Integer.valueOf(tfIdVenda.getText()));
+                    itensPK.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
+                    DAOItens daoItens = new DAOItens();
+                    itens = daoItens.obter(itensPK);
+                    if (itens != null) {
+                        tfQuantidade.setText(String.valueOf(itens.getQuantidade()));
+                        tfPrecoProduto.setText(String.valueOf(itens.getPrecoProduto()));
+                        tfDesconto.setText(String.valueOf(itens.getDesconto()));
+                        tfTotal.setText(String.valueOf(itens.getTotal()));
+                        atvBotoes(false, true, true, true);
+                        habilitarAtributos(false, false, false, false, false);
+                        labelAviso.setText("Encontrou - click [Alterar] ou [Excluir].");
+                        acao = "encontrou";
+                    } else {
+                        atvBotoes(true, true, false, false);
+                        labelAviso.setText("Não cadastrado - click [Inserir] ou aperte ENTER nos campos ID para selecionar outro ID [Pesquisar].");
                     }
-                    tfIdProduto.requestFocus();
-                    tfIdProduto.selectAll();
-                } else {
-                    try {
-                        ItensPK itensPK = new ItensPK();
-                        itensPK.setIdVenda(Integer.valueOf(tfIdVenda.getText()));
-                        itensPK.setIdProduto(Integer.valueOf(tfIdProduto.getText()));
-                        DAOItens daoItens = new DAOItens();
-                        itens = daoItens.obter(itensPK);
-                        if (itens != null) { //se encontrou na lista                            
-                            tfQuantidade.setText(String.valueOf(itens.getQuantidade()));
-                            tfPrecoVenda.setText(String.valueOf(itens.getPrecoVenda()));
-                            atvBotoes(false, true, true, true);
-                            habilitarAtributos(false, false, false, false);
-                            labelAviso.setText("Encontrou - clic [Pesquisar], [Alterar] ou [Excluir]");
-                            acao = "encontrou";
-                        } else {  //não achou na lista
-                            atvBotoes(true, true, false, false);
-                            labelAviso.setText("Não cadastrado - clic [Inserir] ou digite outra id [Pesquisar]");
-                        }
-                        tfIdProduto.setBackground(Color.green);
-                        tfIdVenda.setBackground(Color.green);
-                    } catch (Exception x) {
-                        tfIdProduto.setOpaque(true);
-                        tfIdProduto.selectAll();
-                        tfIdProduto.requestFocus();
-                        tfIdProduto.setBackground(Color.red);
+                    tfIdProduto.setBackground(Color.green);
+                    tfIdVenda.setBackground(Color.green);
+                } catch (Exception x) {
+                    if (tfIdVenda.getText().equals("")) {
+                        labelAviso.setText("Erro no campo ID Venda.");
                         tfIdVenda.setBackground(Color.red);
-                        labelAviso.setText("Erro em algum dos campos ID - " + x.getMessage());
+                    } else {
+                        labelAviso.setText("Erro no campo ID Produto.");
+                        tfIdProduto.setBackground(Color.red);
                     }
                 }
             }
         });
-
         btnCreate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                habilitarAtributos(false, false, true, true);
+                habilitarAtributos(false, false, true, true, true);
                 tfQuantidade.requestFocus();
                 mostrarBotoes(false);
-                labelAviso.setText("Preencha os campos e clic [Salvar] ou clic [Cancelar]");
+                btnSave.setEnabled(true);
+                DAOProduto daoProduto = new DAOProduto();
+                produto = new Produto();
+                int identificador = Integer.valueOf(tfIdProduto.getText());
+                produto = daoProduto.obter(identificador);
+                tfPrecoProduto.setText(String.valueOf(produto.getPreco()));
+                labelAviso.setText("Preencha os campos e clic [Salvar] ou click [Cancelar].");
                 acao = "insert";
                 tfIdProduto.setBackground(corPadrao);
                 tfIdVenda.setBackground(corPadrao);
             }
         });
-
-//-----------------------------  SAVE ------------------------------------------
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -249,22 +219,30 @@ public class GUIItens extends JDialog {
                     itens = new Itens();
                 }
                 try {
-                    sdf.setLenient(false);
                     int idVenda = Integer.valueOf(tfIdVenda.getText());
                     int idProd = Integer.valueOf(tfIdProduto.getText());
                     itens.setItensPK(new ItensPK(idVenda, idProd));
-
                 } catch (Exception erro2) {
                     deuRuim = true;
                     tfIdProduto.setBackground(Color.red);
                     tfIdVenda.setBackground(Color.red);
                 }
                 try {
-                    itens.setQuantidade(Integer.valueOf(tfQuantidade.getText()));
-                    itens.setPrecoVenda(Double.valueOf(tfPrecoVenda.getText()));
+                    int quantidade = Integer.valueOf(tfQuantidade.getText());
+                    itens.setQuantidade(quantidade);
+                    double precoProduto = Double.valueOf(tfPrecoProduto.getText());
+                    itens.setPrecoProduto(precoProduto);
+                    double desconto = (Double.valueOf(tfDesconto.getText())) / 100;
+                    itens.setDesconto(Double.valueOf(tfDesconto.getText()));
+                    double subtotal = precoProduto * quantidade;
+                    double total = subtotal;
+                    if (desconto != 0) {
+                        total = subtotal - (subtotal * desconto);
+                    }
+                    itens.setTotal(total);
                     zerarAtributos();
                 } catch (Exception erro3) {
-                    tfPrecoVenda.setBackground(Color.red);
+                    deuRuim = true;
                 }
                 if (!deuRuim) {
                     if (acao.equals("insert")) {
@@ -274,13 +252,17 @@ public class GUIItens extends JDialog {
                         daoItens.atualizar(itens);
                         labelAviso.setText("Registro alterado.");
                     }
-                    habilitarAtributos(true, true, false, false);
+                    tfQuantidade.setBackground(corPadrao);
+                    tfPrecoProduto.setBackground(corPadrao);
+                    tfDesconto.setBackground(corPadrao);
+                    habilitarAtributos(false, false, false, false, false);
                     mostrarBotoes(true);
                     atvBotoes(false, true, false, false);
-                }//!deu ruim
-                else {
-                    labelAviso.setText("Erro nos dados - corrija");
-                    labelAviso.setBackground(Color.red);
+                } else {
+                    tfQuantidade.setBackground(Color.RED);
+                    tfPrecoProduto.setBackground(Color.RED);
+                    tfDesconto.setBackground(Color.RED);
+                    labelAviso.setText("Erro em algum dos campos.");
                 }
             }
         });
@@ -289,15 +271,22 @@ public class GUIItens extends JDialog {
             public void actionPerformed(ActionEvent ae) {
                 zerarAtributos();
                 atvBotoes(false, true, false, false);
-                habilitarAtributos(true, true, false, false);
+                habilitarAtributos(false, false, false, false, false);
                 mostrarBotoes(true);
+                tfIdProduto.setBackground(corPadrao);
+                tfIdVenda.setBackground(corPadrao);
+                tfQuantidade.setBackground(corPadrao);
+                tfPrecoProduto.setBackground(corPadrao);
+                tfDesconto.setBackground(corPadrao);
+                tfTotal.setBackground(corPadrao);
+                labelAviso.setText("Aperte ENTER nos campos ID e click [Pesquisar].");
             }
         });
         btnList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 acao = "list";
-                GUIItensListagem guiItensListagem = new GUIItensListagem(daoItens.listInOrderNome());
+                GUIItensListagem guiItensListagem = new GUIItensListagem(daoItens.list());
             }
         });
         btnUpdate.addActionListener(new ActionListener() {
@@ -305,7 +294,9 @@ public class GUIItens extends JDialog {
             public void actionPerformed(ActionEvent ae) {
                 acao = "update";
                 mostrarBotoes(false);
-                habilitarAtributos(false, false, true, true);
+                btnSave.setEnabled(true);
+                habilitarAtributos(false, false, true, true, true);
+                labelAviso.setText("Editando - click [Salvar] ou [Cancelar].");
                 tfIdVenda.setBackground(corPadrao);
                 tfIdProduto.setBackground(corPadrao);
             }
@@ -314,18 +305,19 @@ public class GUIItens extends JDialog {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-                        "Confirma a exclusão do registro?\n "
-                        + itens.getProduto().getNome() + "\n"
-                        + Integer.valueOf(itens.getItensPK().getIdVenda()) + "\n"
-                        + "R$" + itens.getPrecoVenda() + "\n",
+                        "Confirma a exclusão da venda?\n"
+                        + "ID: " + Integer.valueOf(itens.getItensPK().getIdVenda()) + "\n"
+                        + "R$" + itens.getPrecoProduto() + "\n",
                         "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
                     labelAviso.setText("Registro excluído...");
-//                    daDoItensPK.remover(produto);
                     daoItens.remover(itens);
                     zerarAtributos();
+                    habilitarAtributos(false, false, false, false, false);
                     mostrarBotoes(true);
                     atvBotoes(false, true, false, false);
+                    tfIdVenda.setBackground(corPadrao);
+                    tfIdProduto.setBackground(corPadrao);
                     tfIdVenda.requestFocus();
                     tfIdVenda.selectAll();
                 }
@@ -341,12 +333,19 @@ public class GUIItens extends JDialog {
                     if (!selectedItem.equals("")) {
                         String[] aux = selectedItem.split("-");
                         tfIdVenda.setText(aux[0]);
+                        tfIdVenda.setBackground(Color.GREEN);
+                        labelAviso.setText("Aperte ENTER nos campos ID e click [Pesquisar].");
+                        btnCreate.setEnabled(false);
+                        btnDelete.setEnabled(false);
+                        btnSave.setEnabled(false);
+                        btnUpdate.setEnabled(false);
+                        btnRetrieve.setEnabled(true);
                     } else {
-                        tfIdVenda.requestFocus();
-                        tfIdVenda.selectAll();
+                        labelAviso.setText("Erro no campo ID Venda.");
+                        tfIdVenda.setBackground(Color.RED);
                     }
                 } else {
-                    System.out.println("Nenhum dado adicionado");
+                    System.out.println("Nenhum dado adicionado.");
                 }
             }
         });
@@ -360,30 +359,33 @@ public class GUIItens extends JDialog {
                     if (!selectedItem.equals("")) {
                         String[] aux = selectedItem.split("-");
                         tfIdProduto.setText(aux[0]);
-                        btnRetrieve.doClick();
+                        tfIdProduto.setBackground(Color.GREEN);
+                        labelAviso.setText("Aperte ENTER nos campos ID e click [Pesquisar].");
+                        btnCreate.setEnabled(false);
+                        btnDelete.setEnabled(false);
+                        btnSave.setEnabled(false);
+                        btnUpdate.setEnabled(false);
+                        btnRetrieve.setEnabled(true);
                     } else {
-                        tfIdProduto.requestFocus();
-                        tfIdProduto.selectAll();
+                        labelAviso.setText("Erro no campo ID Produto.");
+                        tfIdProduto.setBackground(Color.RED);
                     }
                 } else {
-                    System.out.println("Nenhum dado adicionado");
+                    System.out.println("Nenhum dado adicionado.");
                 }
             }
         });
-
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); //antes de sair do sistema, grava os dados da lista em disco
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // Sai   
                 dispose();
             }
         });
-
         CentroDoMonitorMaior centroDoMonitorMaior = new CentroDoMonitorMaior();
         setLocation(centroDoMonitorMaior.getCentroMonitorMaior(this));
         setModal(true);
-        setVisible(true);//faz a janela ficar visível  
+        setVisible(true);
     }
 
     public static void main(String[] args) {

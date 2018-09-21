@@ -5,7 +5,6 @@ import tools.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -25,16 +24,15 @@ public class GUIListagemProduto extends JDialog {
 
     public GUIListagemProduto(List<Produto> texto) {
         setTitle("Listagem de Produto");
-        setSize(600, 300);//tamanho da janela
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);//libera ao sair (tira da memÃ³ria a classe
-        setLayout(new BorderLayout());//informa qual gerenciador de layout serÃ¡ usado
-        setBackground(Color.CYAN);//cor do fundo da janela
+        setSize(1000, 300);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setBackground(Color.CYAN);
         setModal(true);
-        Container cp = getContentPane();//container principal, para adicionar nele os outros componentes
+        Container cp = getContentPane();
         JToolBar toolBar = new JToolBar();
-
         String[] colunas = new String[]{"ID", "Nome", "Especificações", "Preço", "Tipo", "Marca"};
-        String[][] dados = new String[0][3];
+        String[][] dados = new String[0][5];
         DefaultTableModel model = new DefaultTableModel(dados, colunas);
         JTable tabela = new JTable(model);
         scroll.setViewportView(tabela);

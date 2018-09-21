@@ -3,7 +3,6 @@ package GUIs;
 import tools.*;
 import DAOs.DAOTipo;
 import Entidades.Tipo;
-import Entidades.Produto;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -44,58 +43,40 @@ public class GUITipo extends JDialog {
     private final JButton btnAdd = new JButton("Adicionar");
     private final JButton btnRem = new JButton("Remover");
     private final JButton btnCarregar = new JButton("Carregar dados");
-
     private JTable table = new JTable();
     private TipoTableModel tableModel;
-
     private DAOTipo daoTipo = new DAOTipo();
 
-    ;
-
     public GUITipo() {
-
         setTitle("CRUD - Tipo");
         setLayout(new FlowLayout());
         setSize(475, 300);
-
         cp = getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(BorderLayout.NORTH, painelAvisos);
-
         List<Tipo> lista = new ArrayList<>();
         tableModel = new TipoTableModel(lista);
         table.setModel(tableModel);
-
         JScrollPane scrollPane = new JScrollPane(table);
         cp.add(scrollPane);
-
-//        painelBotoes.add(btnAdd);
-//        painelBotoes.add(btnRem);
         painelAvisos.add(new JLabel("Tecla INS = Insere novo registro"));
         painelAvisos.add(new JLabel("   --   "));
         painelAvisos.add(new JLabel("Tecla DEL = Exclui registro selecionado"));
         painelAvisos.setBackground(Color.cyan);
-
         table.setDefaultEditor(Date.class, new DateEditor());
         table.setDefaultRenderer(Date.class, new DateRenderer());
-
-        // É necessário clicar antes na tabela para o código funcionar
         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap actionMap = table.getActionMap();
-
         KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0);
         im.put(enterKey, "Action.insert");
-
         actionMap.put("Action.insert", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 btnAdd.doClick();
             }
         });
-
         KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         im.put(delKey, "Action.delete");
-
         actionMap.put("Action.delete", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -112,13 +93,11 @@ public class GUITipo extends JDialog {
                 }
             }
         });
-
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(WindowEvent winEvt) {
                 dispose();
             }
         });
-
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -143,7 +122,6 @@ public class GUITipo extends JDialog {
 
             }
         });
-
         btnRem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,25 +137,18 @@ public class GUITipo extends JDialog {
                 tableModel.fireTableDataChanged();
             }
         });
-
         btnCarregar.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     List<Tipo> lc = daoTipo.list();
-
                     tableModel.setDados(lc);
                     tableModel.fireTableDataChanged();
-
                 } catch (Exception ex) {
-
                     JOptionPane.showMessageDialog(cp, "Erro ao carregar os dados..." + ex.getMessage());
                 }
             }
-
         });
-
         tableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -186,19 +157,15 @@ public class GUITipo extends JDialog {
                     Tipo c = tableModel.getValue(table.getSelectedRow());
                     daoTipo.atualizar(c);
                 }
-                //}
             }
         }
         );
-
-        btnCarregar.doClick();//carrega os dados 
-        
+        btnCarregar.doClick();
         CentroDoMonitorMaior centroDoMonitorMaior = new CentroDoMonitorMaior();
         setLocation(centroDoMonitorMaior.getCentroMonitorMaior(this));
         setModal(true);
         setVisible(true);
-
-    } //fim do construtor da GUI
+    }
 
     private static class DateRenderer extends DefaultTableCellRenderer {
 
@@ -243,6 +210,7 @@ public class GUITipo extends JDialog {
             }
             return theSpinner;
         }
+
         public static void main(String[] args) {
             GUITipo guiTipo = new GUITipo();
         }

@@ -2,25 +2,6 @@ package GUIs;
 
 import DAOs.DAOCliente;
 import Entidades.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,8 +11,6 @@ import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
@@ -43,8 +22,6 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -54,7 +31,6 @@ import javax.swing.JFileChooser;
 import java.awt.Image;
 import javax.swing.JTextField;
 import tools.*;
-import DAOs.*;
 
 public class GUICliente extends JFrame {
 
@@ -101,7 +77,7 @@ public class GUICliente extends JFrame {
     JTextArea jTextArea = new JTextArea();
     JPanel aviso = new JPanel();
     JLabel labelAviso = new JLabel("");
-    String qualAcao = "";//variavel para facilitar insert e update
+    String qualAcao = "";
     DAOCliente daoCliente = new DAOCliente();
     Cliente cliente;
     private CaixaDeFerramentas ferramentas = new CaixaDeFerramentas();
@@ -167,8 +143,8 @@ public class GUICliente extends JFrame {
         pnCentro.add(tfNome);
         pnCentro.add(lbDataNascimento);
         pnCentro.add(pnDataNascimento);
-        pnDataNascimento.add(btEscolha2);
         pnDataNascimento.add(tfDataNascimento);
+        pnDataNascimento.add(btEscolha2);
         pnCentro.add(lbLogin);
         pnCentro.add(tfLogin);
         pnCentro.add(lbSenha);

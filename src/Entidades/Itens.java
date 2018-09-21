@@ -33,8 +33,14 @@ public class Itens implements Serializable {
     @Column(name = "quantidade")
     private int quantidade;
     @Basic(optional = false)
-    @Column(name = "preco_venda")
-    private double precoVenda;
+    @Column(name = "preco_produto")
+    private double precoProduto;
+    @Basic(optional = false)
+    @Column(name = "desconto")
+    private double desconto;
+    @Basic(optional = false)
+    @Column(name = "total")
+    private double total;
     @JoinColumn(name = "id_produto", referencedColumnName = "id_produto", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Produto produto;
@@ -49,10 +55,12 @@ public class Itens implements Serializable {
         this.itensPK = itensPK;
     }
 
-    public Itens(ItensPK itensPK, int quantidade, double precoVenda) {
+    public Itens(ItensPK itensPK, int quantidade, double precoProduto, double desconto, double total) {
         this.itensPK = itensPK;
         this.quantidade = quantidade;
-        this.precoVenda = precoVenda;
+        this.precoProduto = precoProduto;
+        this.desconto = desconto;
+        this.total = total;
     }
 
     public Itens(int idVenda, int idProduto) {
@@ -75,12 +83,28 @@ public class Itens implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public double getPrecoVenda() {
-        return precoVenda;
+    public double getPrecoProduto() {
+        return precoProduto;
     }
 
-    public void setPrecoVenda(double precoVenda) {
-        this.precoVenda = precoVenda;
+    public void setPrecoProduto(double precoProduto) {
+        this.precoProduto = precoProduto;
+    }
+
+    public double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public Produto getProduto() {

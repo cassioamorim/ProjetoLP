@@ -24,7 +24,7 @@ public class DAOVenda extends DAOGenerico<Venda> {
     }
 
     public List<Venda> listByNome(String nome) {
-        return em.createQuery("SELECT e FROM Venda e WHERE e.data LIKE :nome").setParameter("nome", "%" + nome + "%").getResultList();
+        return em.createQuery("SELECT e FROM Venda e WHERE e.clienteCpf LIKE :nome").setParameter("nome", "%" + nome + "%").getResultList();
     }
 
     public List<Venda> listById(int id) {
@@ -32,7 +32,7 @@ public class DAOVenda extends DAOGenerico<Venda> {
     }
 
     public List<Venda> listInOrderNome() {
-        return em.createQuery("SELECT e FROM Venda e ORDER BY e.data").getResultList();
+        return em.createQuery("SELECT e FROM Venda e ORDER BY e.clienteCpf").getResultList();
     }
 
     public List<Venda> listInOrderId() {

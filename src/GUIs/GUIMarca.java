@@ -1,6 +1,5 @@
 package GUIs;
 
-import tools.*;
 import DAOs.DAOMarca;
 import Entidades.Marca;
 import java.awt.BorderLayout;
@@ -50,54 +49,39 @@ public class GUIMarca extends JDialog {
     DAOMarca daoMarca = new DAOMarca();
 
     public GUIMarca() {
-
         setTitle("CRUD - Marca");
         setLayout(new FlowLayout());
         setSize(475, 300);
-
         cp = getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(BorderLayout.NORTH, painelAvisos);
-
         List<Marca> lista = new ArrayList<>();
         tableModel = new MarcaTableModel(lista);
         table.setModel(tableModel);
-
         JScrollPane scrollPane = new JScrollPane(table);
         cp.add(scrollPane);
-
-//        painelBotoes.add(btnAdd);
-//        painelBotoes.add(btnRem);
         painelAvisos.add(new JLabel("Tecla INS = Insere novo registro"));
         painelAvisos.add(new JLabel("   --   "));
         painelAvisos.add(new JLabel("Tecla DEL = Exclui registro selecionado"));
         painelAvisos.setBackground(Color.cyan);
-
         table.setDefaultEditor(Date.class, new DateEditor());
         table.setDefaultRenderer(Date.class, new DateRenderer());
-
-        // É necessário clicar antes na tabela para o código funcionar
         InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap actionMap = table.getActionMap();
-
         KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0);
         im.put(enterKey, "Action.insert");
-
         actionMap.put("Action.insert", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 btnAdd.doClick();
             }
         });
-
         KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         im.put(delKey, "Action.delete");
-
         actionMap.put("Action.delete", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (table.getSelectedRow() >= 0) {
-
                     if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(cp,
                             "Confirme a exclusão [" + tableModel.getValue(table.getSelectedRow()).getIdMarca() + " - "
                             + tableModel.getValue(table.getSelectedRow()).getNome() + "]?", "Confirm",
@@ -109,21 +93,17 @@ public class GUIMarca extends JDialog {
                 }
             }
         });
-
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(WindowEvent winEvt) {
                 dispose();
             }
         });
-
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Marca marca = new Marca();
-
                 marca.setIdMarca(daoMarca.autoIdMarca());
                 marca.setNome("Nome");
-
                 try {
                     Marca c = daoMarca.obter(marca.getIdMarca());
                     if (c == null) {
@@ -137,10 +117,8 @@ public class GUIMarca extends JDialog {
                     JOptionPane.showMessageDialog(cp, "Erro ao inserir =>" + marca.getIdMarca()
                             + " com o erro=>" + err.getMessage());
                 }
-
             }
         });
-
         btnRem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,46 +133,35 @@ public class GUIMarca extends JDialog {
                 tableModel.fireTableDataChanged();
             }
         });
-
         btnCarregar.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     List<Marca> lc = daoMarca.list();
-
                     tableModel.setDados(lc);
                     tableModel.fireTableDataChanged();
-
                 } catch (Exception ex) {
-
                     JOptionPane.showMessageDialog(cp, "Erro ao carregar os dados..." + ex.getMessage());
                 }
             }
 
         });
-
         tableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                // if (tableModel.mudou) {
                 if (table.getSelectedRow() != -1 && table.getSelectedRow() < tableModel.getRowCount()) {
                     Marca c = tableModel.getValue(table.getSelectedRow());
                     daoMarca.atualizar(c);
                 }
-                //}
             }
         }
         );
-
-        btnCarregar.doClick();//carrega os dados 
-
+        btnCarregar.doClick();
         CentroDoMonitorMaior centroDoMonitorMaior = new CentroDoMonitorMaior();
         setLocation(centroDoMonitorMaior.getCentroMonitorMaior(this));
         setModal(true);
         setVisible(true);
-
-    } //fim do construtor da GUI
+    }
 
     private static class DateRenderer extends DefaultTableCellRenderer {
 
@@ -239,7 +206,7 @@ public class GUIMarca extends JDialog {
             }
             return theSpinner;
         }
-        
+
         public static void main(String[] args) {
             GUIMarca guiMarca = new GUIMarca();
         }

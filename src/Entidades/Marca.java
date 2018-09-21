@@ -98,5 +98,5 @@ public class Marca implements Serializable {
     public String toString() {
         return idMarca + "-" + nome;
     }
-    
+
 }

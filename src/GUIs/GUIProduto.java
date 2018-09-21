@@ -1,27 +1,7 @@
 package GUIs;
 
-import GUIs.*;
 import DAOs.DAOProduto;
 import Entidades.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,21 +11,12 @@ import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.List;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -100,7 +71,7 @@ public class GUIProduto extends JFrame {
     JTextArea jTextArea = new JTextArea();
     JPanel aviso = new JPanel();
     JLabel labelAviso = new JLabel("");
-    String qualAcao = "";//variavel para facilitar insert e update
+    String qualAcao = "";
     DAOProduto daoProduto = new DAOProduto();
     Produto produto;
     private CaixaDeFerramentas ferramentas = new CaixaDeFerramentas();
@@ -113,7 +84,7 @@ public class GUIProduto extends JFrame {
     private ImageIcon icone;
 
     public GUIProduto() {
-        setSize(850, 375);
+        setSize(850, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("CRUD - Produto");
         Container cp = getContentPane();

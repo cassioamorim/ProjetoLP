@@ -74,7 +74,7 @@ public class ItensPK implements Serializable {
 
     @Override
     public String toString() {
-        return idVenda + "-" + idProduto;
+        return "Entidades.ItensPK[ idVenda=" + idVenda + ", idProduto=" + idProduto + " ]";
     }
     
 }

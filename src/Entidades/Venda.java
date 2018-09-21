@@ -114,7 +114,7 @@ public class Venda implements Serializable {
 
     @Override
     public String toString() {
-        return idVenda + "-" + clienteCpf;
+        return idVenda + "-" + data + "-" + clienteCpf;
     }
-    
+
 }
