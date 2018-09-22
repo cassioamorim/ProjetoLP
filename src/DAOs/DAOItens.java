@@ -59,7 +59,7 @@ public class DAOItens extends DAOGenerico<Itens> {
         DAOItens daoItens = new DAOItens();
         List<Itens> listaItens = daoItens.list();
         for (Itens precoProduto : listaItens) {
-            System.out.println(precoProduto.getItensPK().getIdVenda() + "-" + precoProduto.getItensPK().getIdProduto());
+            System.out.println(precoProduto.getVenda().getIdVenda() + "-" + precoProduto.getProduto().getIdProduto());
         }
     }
 }
